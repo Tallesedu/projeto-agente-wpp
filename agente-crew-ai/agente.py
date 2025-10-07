@@ -30,10 +30,14 @@ async def handler(websocket):
     async for message in websocket:
         data = json.loads(message)
         print(data)
+
         user_message = data.get("message", "")
         user_number = data.get("user_number", "")
         user_name = data.get("user_name", "")
+        historico = data.get("historico", "")
+
         print(user_name)
+        
         equipe = Crew(
             agents=[atendimento],
             tasks=[task_atendimento],
@@ -43,7 +47,8 @@ async def handler(websocket):
         resultado = equipe.kickoff(inputs={
             'message': user_message,
             'user_number': user_number,
-            'user_name': user_name
+            'user_name': user_name,
+            'historico': historico,
         })
 
         resposta_texto = str(resultado)

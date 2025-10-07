@@ -11,6 +11,8 @@ async def send_message(request: Request):
     data = await request.json()
     print("Data recebida:", data)
     
+    historico = data.get("historico", [])
+    historico_formatado = json.dumps(historico, ensure_ascii=False, indent=2)
     user_message = data.get("message", "")
     user_number = data.get("user_number", "")
     user_name = data.get("user_name", "")
@@ -21,7 +23,8 @@ async def send_message(request: Request):
         await ws.send(json.dumps({
             "message": user_message,
             "user_number": user_number,
-            "user_name": user_name
+            "user_name": user_name,
+            "historico": historico_formatado
         }))
         response = await ws.recv()
         print("Resposta do CrewAI:", response)
